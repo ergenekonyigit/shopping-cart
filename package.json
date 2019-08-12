@@ -11,7 +11,7 @@
     "dev": "microbundle watch",
     "test": "jest"
   },
-  "author": "",
+  "author": "Ergenekon Yigit",
   "license": "ISC",
   "devDependencies": {
     "jest": "^24.8.0",
@@ -20,7 +20,7 @@
   "jest": {
     "verbose": true,
     "testMatch": [
-     "**/test/index.test.js"
+      "**/test/index.test.js"
     ]
-   }
+  }
 }
