@@ -4,4 +4,4 @@ module.exports = class Coupon {
     this.discount = props.discount;
     this.discountType = props.discountType;
   }
-}
+};

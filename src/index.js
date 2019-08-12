@@ -9,7 +9,7 @@ const DiscountType = { Rate: 'Rate', Amount: 'Amount' };
 
 const foodCategory = new Category({ title: 'Food' });
 const waterCategory = new Category({ title: 'Water', parentCategory: foodCategory.title });
-const clothesCategory = new Category({ title: 'Clothes' })
+const clothesCategory = new Category({ title: 'Clothes' });
 
 const foodCampaign = new Campaign({
   category: foodCategory.title,
@@ -27,9 +27,9 @@ const waterCampaign = new Campaign({
 foodCategory.addCampaign(foodCampaign);
 waterCategory.addCampaign(waterCampaign);
 
-const oliveOil = new Product({ title: 'Olive Oil', price: 50.00, category: foodCategory });
+const oliveOil = new Product({ title: 'Olive Oil', price: 50.0, category: foodCategory });
 const water = new Product({ title: 'Pinar Water', price: 5.25, category: waterCategory });
-const tshirt = new Product({ title: 'T-Shirt', price: 25.00, category: clothesCategory });
+const tshirt = new Product({ title: 'T-Shirt', price: 25.0, category: clothesCategory });
 
 const cart = new ShoppingCart();
 cart.addItem({ product: oliveOil, quantitiy: 3 });
@@ -39,6 +39,6 @@ cart.addItem({ product: tshirt, quantitiy: 1 });
 const coupon = new Coupon({ minPrice: 100.0, discount: 10.0, discountType: DiscountType.Rate });
 
 cart.applyCoupon(coupon);
-cart.applyDiscounts([foodCampaign, waterCampaign])
+cart.applyDiscounts([foodCampaign, waterCampaign]);
 
 cart.print();

@@ -4,4 +4,4 @@ module.exports = class Product {
     this.price = props.price;
     this.category = props.category || null;
   }
-}
+};

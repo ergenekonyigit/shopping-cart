@@ -5,4 +5,4 @@ module.exports = class Campaign {
     this.minCount = props.minCount;
     this.discountType = props.discountType;
   }
-}
+};

@@ -8,4 +8,4 @@ module.exports = class Category {
   addCampaign(newCampaign) {
     this.campaign = newCampaign;
   }
-}
+};

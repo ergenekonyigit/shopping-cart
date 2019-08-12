@@ -10,8 +10,10 @@ module.exports = class DeliveryCostCalculator {
   }
 
   calculateFor(cart) {
-    return (this.costPerDelivery * this.numberOfDeliveries(cart))
-            + (this.costPerProduct * this.numberOfDeliveries(cart))
-            + this.fixedCost;
+    return (
+      this.costPerDelivery * this.numberOfDeliveries(cart) +
+      this.costPerProduct * this.numberOfDeliveries(cart) +
+      this.fixedCost
+    );
   }
-}
+};

@@ -10,11 +10,11 @@ const DiscountType = { Rate: 'Rate', Amount: 'Amount' };
 
 test('reduce floating point digits', () => {
   const digit = 2;
-  const result1 = util.reduceDigit(12.344302000100, digit);
+  const result1 = util.reduceDigit(12.3443020001, digit);
   const expected1 = 12.34;
   expect(result1).toBe(expected1);
 
-  const result2 = util.reduceDigit(12.346302000100, digit);
+  const result2 = util.reduceDigit(12.3463020001, digit);
   const expected2 = 12.35;
   expect(result2).toBe(expected2);
 });
@@ -26,19 +26,19 @@ test('new category', () => {
 });
 
 test('new product', () => {
-  const result = new Product({ title: 'Olive Oil', price: 50.00 });
+  const result = new Product({ title: 'Olive Oil', price: 50.0 });
   expect(result.title).toBe('Olive Oil');
-  expect(result.price).toBe(50.00);
+  expect(result.price).toBe(50.0);
   expect(result.category).toBeNull();
 });
 
 test('product category', () => {
   const foodCategory = new Category({ title: 'Food' });
-  const oliveOil = new Product({ title: 'Olive Oil', price: 50.00, category: foodCategory });
+  const oliveOil = new Product({ title: 'Olive Oil', price: 50.0, category: foodCategory });
   const result = oliveOil.category;
   const expected = foodCategory;
   expect(result).toBe(expected);
-})
+});
 
 test('category campaign', () => {
   const foodCategory = new Category({ title: 'Food' });
@@ -63,11 +63,11 @@ const initialShoppingCartData = () => {
     discountType: DiscountType.Rate
   });
   foodCategory.addCampaign(foodCampaign);
-  const oliveOil = new Product({ title: 'Olive Oil', price: 50.00, category: foodCategory });
+  const oliveOil = new Product({ title: 'Olive Oil', price: 50.0, category: foodCategory });
   const cart = new ShoppingCart();
   cart.addItem({ product: oliveOil, quantitiy: 3 });
   return cart;
-}
+};
 
 test('shopping cart, add item', () => {
   const cart = initialShoppingCartData();
@@ -78,15 +78,15 @@ test('shopping cart, add item', () => {
 
 test('shopping cart, calc total price', () => {
   const cart = initialShoppingCartData();
-  const result = cart.calcTotalPrice(cart.cartTotalPrice, { price: 40.00, quantitiy: 2 });
-  const expected = 230.00;
+  const result = cart.calcTotalPrice(cart.cartTotalPrice, { price: 40.0, quantitiy: 2 });
+  const expected = 230.0;
   expect(result).toBe(expected);
 });
 
 test('shopping cart, total price', () => {
   const cart = initialShoppingCartData();
   const result = cart.cartTotalPrice;
-  const expected = 150.00;
+  const expected = 150.0;
   expect(result).toBe(expected);
 });
 
@@ -102,7 +102,7 @@ test('shopping cart, apply coupon rate', () => {
   const coupon = new Coupon({ minPrice: 100.0, discount: 10.0, discountType: DiscountType.Rate });
   cart.applyCoupon(coupon);
   const result = cart.getTotalAmountAfterDiscounts();
-  const expected = 135.00;
+  const expected = 135.0;
   expect(result).toBe(expected);
 });
 
@@ -111,7 +111,7 @@ test('shopping cart, apply coupon amount', () => {
   const coupon = new Coupon({ minPrice: 100.0, discount: 10.0, discountType: DiscountType.Amount });
   cart.applyCoupon(coupon);
   const result = cart.getTotalAmountAfterDiscounts();
-  const expected = 140.00;
+  const expected = 140.0;
   expect(result).toBe(expected);
 });
 
@@ -124,12 +124,12 @@ test('shopping cart, apply discounts rate', () => {
     discountType: DiscountType.Rate
   });
   foodCategory.addCampaign(foodCampaign);
-  const oliveOil = new Product({ title: 'Olive Oil', price: 50.00, category: foodCategory });
+  const oliveOil = new Product({ title: 'Olive Oil', price: 50.0, category: foodCategory });
   const cart = new ShoppingCart();
   cart.addItem({ product: oliveOil, quantitiy: 3 });
   cart.applyDiscounts([foodCampaign]);
   const result = cart.getTotalAmountAfterDiscounts();
-  const expected = 120.00;
+  const expected = 120.0;
   expect(result).toBe(expected);
 });
 
@@ -142,12 +142,12 @@ test('shopping cart, apply discounts amount', () => {
     discountType: DiscountType.Amount
   });
   foodCategory.addCampaign(foodCampaign);
-  const oliveOil = new Product({ title: 'Olive Oil', price: 50.00, category: foodCategory });
+  const oliveOil = new Product({ title: 'Olive Oil', price: 50.0, category: foodCategory });
   const cart = new ShoppingCart();
   cart.addItem({ product: oliveOil, quantitiy: 3 });
   cart.applyDiscounts([foodCampaign]);
   const result = cart.getTotalAmountAfterDiscounts();
-  const expected = 130.00;
+  const expected = 130.0;
   expect(result).toBe(expected);
 });
 
@@ -168,7 +168,7 @@ test('shopping cart, get campaign discount', () => {
   });
   foodCategory.addCampaign(foodCampaign);
   waterCategory.addCampaign(waterCampaign);
-  const oliveOil = new Product({ title: 'Olive Oil', price: 50.00, category: foodCategory });
+  const oliveOil = new Product({ title: 'Olive Oil', price: 50.0, category: foodCategory });
   const water = new Product({ title: 'Pinar Water', price: 5.25, category: waterCategory });
   const cart = new ShoppingCart();
   cart.addItem({ product: oliveOil, quantitiy: 3 });
@@ -182,17 +182,20 @@ test('shopping cart, get campaign discount', () => {
 const initialDeliveryCostCalculatorData = () => {
   const foodCategory = new Category({ title: 'Food' });
   const waterCategory = new Category({ title: 'Water', parentCategory: foodCategory.title });
-  const oliveOil = new Product({ title: 'Olive Oil', price: 50.00, category: foodCategory });
+  const oliveOil = new Product({ title: 'Olive Oil', price: 50.0, category: foodCategory });
   const water = new Product({ title: 'Pinar Water', price: 5.25, category: waterCategory });
   const cart = new ShoppingCart();
   cart.addItem({ product: oliveOil, quantitiy: 3 });
   cart.addItem({ product: water, quantitiy: 2 });
   return cart;
-}
+};
 
 test('delivery cost calculator, number of deliveries', () => {
   const cart = initialDeliveryCostCalculatorData();
-  const deliveryCostCalculator = new DeliveryCostCalculator({ costPerDelivery: 12, costPerProduct: 3 });
+  const deliveryCostCalculator = new DeliveryCostCalculator({
+    costPerDelivery: 12,
+    costPerProduct: 3
+  });
   const result = deliveryCostCalculator.numberOfDeliveries(cart);
   const expected = 2;
   expect(result).toBe(expected);
@@ -200,7 +203,10 @@ test('delivery cost calculator, number of deliveries', () => {
 
 test('delivery cost calculator, calculate cost', () => {
   const cart = initialDeliveryCostCalculatorData();
-  const deliveryCostCalculator = new DeliveryCostCalculator({ costPerDelivery: 12, costPerProduct: 3 });
+  const deliveryCostCalculator = new DeliveryCostCalculator({
+    costPerDelivery: 12,
+    costPerProduct: 3
+  });
   const result = deliveryCostCalculator.calculateFor(cart);
   const expected = 32.99;
   expect(result).toBe(expected);

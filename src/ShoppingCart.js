@@ -25,28 +25,31 @@ module.exports = class ShoppingCart {
   }
 
   calcTotalPrice(totalPrice, product) {
-    return totalPrice + (product.quantitiy * product.price);
+    return totalPrice + product.quantitiy * product.price;
   }
 
   addItem({ product, quantitiy }) {
     product.quantitiy = quantitiy;
     product.isDiscountApplied = false;
-    product.discountPrice = 0
+    product.discountPrice = 0;
     this.products.push(product);
     this.setCartTotalPrice = this.calcTotalPrice(this.getCartTotalPrice, product);
   }
 
   calcDiscountRate(price, discount) {
-    return (price / 100 * discount * -1);
+    return (price / 100) * discount * -1;
   }
 
   applyDiscounts(args) {
     args.map(arg => {
       this.products.find(product => {
-        if ((product.category.title === arg.category) && (product.quantitiy >= arg.minCount)) {
+        if (product.category.title === arg.category && product.quantitiy >= arg.minCount) {
           product.isDiscountApplied = true;
           if (product.category.campaign.discountType === 'Rate') {
-            product.discountPrice = this.calcDiscountRate((product.price * product.quantitiy), arg.discount);
+            product.discountPrice = this.calcDiscountRate(
+              product.price * product.quantitiy,
+              arg.discount
+            );
           } else {
             product.discountPrice = arg.discount * -1;
           }
@@ -60,7 +63,10 @@ module.exports = class ShoppingCart {
     if (this.getCartTotalPrice < coupon.minPrice) return;
 
     if (coupon.discountType === 'Rate') {
-      this.setCartTotalPriceWithCoupon = this.calcDiscountRate(this.getCartTotalPrice, coupon.discount);
+      this.setCartTotalPriceWithCoupon = this.calcDiscountRate(
+        this.getCartTotalPrice,
+        coupon.discount
+      );
     } else {
       this.setCartTotalPriceWithCoupon = coupon.discount * -1;
     }
@@ -79,27 +85,34 @@ module.exports = class ShoppingCart {
   }
 
   getDeliveryCost() {
-    const deliveryCostCalculator = new DeliveryCostCalculator({ costPerDelivery: 12, costPerProduct: 3 });
+    const deliveryCostCalculator = new DeliveryCostCalculator({
+      costPerDelivery: 12,
+      costPerProduct: 3
+    });
     return deliveryCostCalculator.calculateFor(this);
   }
 
   print() {
     console.log('Shopping Cart');
     this.products.map((product, index) => {
-      console.log('\nCategory Name:', product.category.title,
-                  '\nProduct Name:', product.title,
-                  '\nQuantity:', product.quantitiy,
-                  '\nUnit Price:', product.price,
-                  '\nTotal Price:', (product.price * product.quantitiy),
-                  '\nTotal Discount:', product.discountPrice);
+      console.log(
+        '\nCategory Name:', product.category.title,
+        '\nProduct Name:', product.title,
+        '\nQuantity:', product.quantitiy,
+        '\nUnit Price:', product.price,
+        '\nTotal Price:', product.price * product.quantitiy,
+        '\nTotal Discount:', product.discountPrice
+      );
     });
-    console.log('\n----------------------------------------------------------------');
-    console.log('\nSummary:\n',
-                '\nTotal Price:', this.getCartTotalPrice,
-                '\nCoupon Discount:', util.reduceDigit(this.getCouponDiscount(), 2),
-                '\nTotal Discount', this.getCampaignDiscount(),
-                '\nTotal Price After Discounts:', this.getTotalAmountAfterDiscounts(),
-                '\nDelivery Cost:', this.getDeliveryCost(),
-                '\nTotal with Delivery:', this.getTotalAmountAfterDiscounts() + this.getDeliveryCost());
+    console.log('\n----------------------------------------------------------');
+    console.log(
+      '\nSummary:\n',
+      '\nTotal Price:', this.getCartTotalPrice,
+      '\nCoupon Discount:', util.reduceDigit(this.getCouponDiscount(), 2),
+      '\nTotal Discount', this.getCampaignDiscount(),
+      '\nTotal Price After Discounts:', this.getTotalAmountAfterDiscounts(),
+      '\nDelivery Cost:', this.getDeliveryCost(),
+      '\nTotal with Delivery:', this.getTotalAmountAfterDiscounts() + this.getDeliveryCost()
+    );
   }
-}
+};
