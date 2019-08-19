@@ -1,6 +1,6 @@
 # Shopping Cart Case Study
 
-Trendyol Tech Case Study
+Case Study
 
 ## Getting Started
 
